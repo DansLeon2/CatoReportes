@@ -27,11 +27,11 @@ export default function TarjetaCitaMedica({
   };
 
   return (
-    <section className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm animate-in fade-in duration-300">
+    <section className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-sm font-bold text-red-600 uppercase flex items-center gap-2">
-          <div className="w-1 h-4 bg-red-600 rounded-full"></div> Detalles de la
-          Cita Médica
+          <div className="w-1 h-4 bg-red-600 rounded-full"></div> 2. Síntomas y
+          Prioridad
         </h2>
         <Stethoscope size={18} className="text-gray-300" />
       </div>
@@ -40,7 +40,7 @@ export default function TarjetaCitaMedica({
         <div className="flex flex-col justify-between">
           <div>
             <label className="text-[11px] font-bold text-gray-500 uppercase mb-3 block">
-              Motivo de Consulta / Síntomas
+              Motivo de Consulta / Síntomas Comunes
             </label>
             <div className="space-y-2">
               {["Dolor General", "Fiebre / Malestar", "Revisión de Rutina"].map(
@@ -93,13 +93,13 @@ export default function TarjetaCitaMedica({
               <input
                 type="checkbox"
                 checked={requiereAsistencia}
-                onChange={(
-                  e: any, // Corregido el 'e' implícito agregando ': any'
-                ) => actualizarDatos({ requiereAsistencia: e.target.checked })}
+                onChange={(e: any) =>
+                  actualizarDatos({ requiereAsistencia: e.target.checked })
+                }
                 className="w-5 h-5 accent-red-600 rounded cursor-pointer"
               />
               <span className="text-sm font-bold text-gray-700">
-                ¿Silla de ruedas?
+                ¿Requiere silla de ruedas?
               </span>
             </label>
           </div>
@@ -107,14 +107,14 @@ export default function TarjetaCitaMedica({
 
         <div className="flex flex-col">
           <label className="text-[11px] font-bold text-gray-500 uppercase mb-3 block">
-            Diagnóstico Preliminar y Notas
+            Observaciones Adicionales o Alergias
           </label>
           <textarea
             value={diagnosticoPreliminar}
             onChange={(e: any) =>
               actualizarDatos({ diagnosticoPreliminar: e.target.value })
-            } // Corregido
-            placeholder="Anota alergias conocidas, medicamentos actuales..."
+            }
+            placeholder="Anota observaciones críticas antes de la consulta con el especialista..."
             className="w-full flex-grow p-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-red-500/20 resize-none bg-white min-h-[120px]"
           />
         </div>
