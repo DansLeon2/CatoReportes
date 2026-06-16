@@ -1,16 +1,14 @@
 import { useState } from "react";
 import TarjetaCitaMedica from "../components/tarjetamedica";
+import axios from "axios";
 
 export default function DashboardCitas() {
-  // Estado expandido con datos complejos del Paciente y de la Cita
   const [datosCita, setDatosCita] = useState({
-    // Datos del Paciente
     identificacion: "",
     nombreCompleto: "",
     fechaNacimiento: "",
     genero: "",
     telefono: "",
-    // Datos médicos
     sintomasSeleccionados: [],
     diagnosticoPreliminar: "",
     prioridad: "",
@@ -22,7 +20,6 @@ export default function DashboardCitas() {
   };
 
   const guardarCita = async () => {
-    // Validación básica antes de enviar
     if (
       !datosCita.identificacion ||
       !datosCita.nombreCompleto ||
@@ -33,15 +30,11 @@ export default function DashboardCitas() {
     }
 
     try {
-      const respuesta = await fetch("/api/citas", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datosCita),
-      });
+      // Apuntando directo al puerto 5000 donde corre tu servidor Node.js
+      const respuesta = await axios.post("http://localhost:5000/api/citas", datosCita);
 
-      if (respuesta.ok) {
+      if (respuesta.status === 200 || respuesta.status === 201) {
         alert("Paciente y Cita Médica registrados con éxito.");
-        // Limpiar formulario completo
         setDatosCita({
           identificacion: "",
           nombreCompleto: "",
@@ -57,7 +50,8 @@ export default function DashboardCitas() {
         alert("Error al registrar la cita médica.");
       }
     } catch (error) {
-      console.error("Error de red:", error);
+      console.error("Error de red al conectar con el backend:", error);
+      alert("No se pudo conectar con el servidor backend. Asegúrate de que el backend esté corriendo en el puerto 5000.");
     }
   };
 
@@ -82,11 +76,10 @@ export default function DashboardCitas() {
           </button>
         </header>
 
-        {/* SECCIÓN NUEVA: DATOS PERSONALES DEL PACIENTE */}
+        {/* 1. DATOS DEL PACIENTE */}
         <section className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
           <h2 className="text-sm font-bold text-gray-700 uppercase mb-4 flex items-center gap-2">
-            <div className="w-1 h-4 bg-gray-400 rounded-full"></div> 1. Datos
-            del Paciente
+            <div className="w-1 h-4 bg-gray-400 rounded-full"></div> 1. Datos del Paciente
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,7 +163,7 @@ export default function DashboardCitas() {
           </div>
         </section>
 
-        {/* COMPONENTE DE DETALLES CLÍNICOS (Tu Tarjeta Adaptada) */}
+        {/* 2. SÍNTOMAS Y PRIORIDAD (Componente Adaptado) */}
         <TarjetaCitaMedica
           datos={datosCita}
           actualizarDatos={actualizarDatosCita}
